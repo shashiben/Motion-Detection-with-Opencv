@@ -5,12 +5,9 @@ Created on Sat May  2 15:08:06 2020
 """
 
 #Importing required directories
-import package
 import cv2
 
-def capt():
-    return cv2.VideoCapture(0)
-
+capture=0
 #Capture the live Video
 cap=cv2.VideoCapture(0)
 
@@ -19,6 +16,12 @@ ret,frame1=cap.read()
 
 #Get second frame
 ret,frame2=cap.read()
+
+#Fourcc for video writer
+fourcc=cv2.VideoWriter_fourcc(*'XVID')
+
+#To save video when s is clicked
+output=cv2.VideoWriter("cap.avi",fourcc,20,(640,480)) 
 
 #Run window until camera closes
 while(cap.isOpened()):
@@ -65,11 +68,21 @@ while(cap.isOpened()):
     key=cv2.waitKey(1) &0xFF
     if key==27:
         break
-    
+    elif key==ord("s"):
+        #To save video
+        capture=1
+    if (capture==1):
+        #write frames in video
+        output.write(frame1)
 #Destroy all windows
 cv2.destroyAllWindows()
 
+#Release output
+output.release()
+
 #Release captures
 cap.release()
+
+
 
 
